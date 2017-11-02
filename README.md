@@ -50,9 +50,9 @@ Se detalla en la siguiente URL el proceso realizado:
 Descargada la información debemos proceder a ajustarla de modo que se ajuste al análisis que queremos realizar. En este caso queremos:
 * Analizar los artículos que se publican por cada equipo una semana antes de la jornada que queremos analizar (en realidad, aquellos articulos que se han publicado después de la última jornada y antes de la jornada que queremos predecir).
 * Establecer el comportamiento del equipo desde una jornada a la siguiente. Para esto analizamos la variación de puntos de cada equipo de una semana a la siguiente:
-** Si los puntos son los mismos, el equipo va a peor (no consiguió ningún punto).
-** Si solo adquirió un punto: el equipo se mantiene (empató en la jornada).
-** Si adquirió más de un punto, el equipo ha mejorado.
+ * Si los puntos son los mismos, el equipo va a peor (no consiguió ningún punto).
+ * Si solo adquirió un punto: el equipo se mantiene (empató en la jornada).
+ * Si adquirió más de un punto, el equipo ha mejorado.
 * Agrupar la información de cada equipo por cada jornada, texto de los artículos publicados y evolución de sus resultados en esa jornada.
 
 En la siguiente url se detalla el proceso realizado:
