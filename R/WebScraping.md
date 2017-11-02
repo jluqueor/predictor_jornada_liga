@@ -8,6 +8,8 @@ Para realizar '***webscraping***' se requiere tener unos conocimientos mínimos 
 
 Para ayudar a realizar esta tarea, en la documentación del propio paquete de *****rvest***** aconsejan utilizar un selector de **CSS**, en concreto usar el ***plugin*** [selector gadget](http://selectorgadget.com/) que se incorpora como elemento del navegador **Chrome**.
 
+![Selector CSS](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/webScrapingSelectorCSS.JPG).
+
 También ayuda explorar el código de la página web, por ejemplo con la funcionalidad **inspeccionar** del mismo navegador.
 
 
