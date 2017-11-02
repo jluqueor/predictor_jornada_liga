@@ -4,7 +4,7 @@ Este proyecto incluye los procesos necesarios para llevar a cabo un proceso de p
 
 El proceso completo esta realizado con código R. Visualmente los procesos que se llevan a cabo son los siguientes:
 
-[img/proceso.JPG]
+![Proceso](/img/proceso.JPG)
 
 ## Objetivos
 
