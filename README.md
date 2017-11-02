@@ -19,7 +19,9 @@ Este proyecto tiene varios objetivos:
 
 El primer paso realizado es la identicación de las fuentes de datos que nos proporcionarán información. Hay mucha información publicada de diferentes medios. Como punto de partida y como ejemplo, se opta por analizar la información que el diario ''marca'' publica en su web. Para llevar a cabo análisis predictivos es necesario disponer de información histórica que permita entrenar modelos y ''marca'' habilita desde su web a la consulta de su hemeroteca. 
 
-La información identificada en este diario es la siguiente:
+La información identificada en este diario es la siguiente: 
+
+![Webscraping](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/WebScraping.md)
 
 #### Articulos publicados por fecha
 
