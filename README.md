@@ -4,7 +4,7 @@ Este proyecto incluye los procesos necesarios para llevar a cabo un proceso de p
 
 El proceso completo esta realizado con código R. Visualmente los procesos que se llevan a cabo son los siguientes:
 
-![Proceso](/img/proceso.JPG)
+![Proceso](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/Proceso.JPG)
 
 ## Objetivos
 
@@ -25,7 +25,7 @@ La información identificada en este diario es la siguiente:
 
 Se puede acceder a los articulos publicados en cada fecha desde el año 2009. La estructura de los enlaces incorpora la fecha y acceso a subsecciones de cada deportes (especialmente de de fútbol que nos interesa en este caso), y permite la selección de la categoría a estudiar:
 
-[img/hemerotecaMarca.JPG]
+![Hemeroteca Marca](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/hemerotecaMarca.JPG)
 
 Esto es especialmente interesante ya que nos permite acceder a la información específica que queremos estudiar.
 
@@ -33,7 +33,7 @@ Esto es especialmente interesante ya que nos permite acceder a la información e
 
 Tiene un enlace específico donde proporciona las estadísticas de resultado de cada jornada y categoría. Esto facilita la obtención de la situación de cada equipo al finalizar cada jornada, así como los equipos que conforman cada temporada, fechas de cada jornada, número de jornadas de la temporada consultada, enlaces a las estadísticas de las otras jornadas de la temporada...
 
-[img/clasificacionJornada.JPG]
+![Clasificación jornada](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/clasificacionJornada.JPG)
 
 Este mismo análisis se puede realizar con otras publicaciones de manera que se capture más información. 
 
