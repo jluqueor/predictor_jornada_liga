@@ -10,7 +10,9 @@ Para ayudar a realizar esta tarea, en la documentación del propio paquete de **
 
 ![Selector CSS](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/webScrapingSelectorCSS.JPG).
 
-También ayuda explorar el código de la página web, por ejemplo con la funcionalidad **inspeccionar** del mismo navegador.
+También ayuda explorar el código de la página web, por ejemplo con la funcionalidad **inspeccionar** del navegador **Chrome**:
+
+![Inspeccionar](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/InspeccionarElementoChrome.JPG)
 
 
 
