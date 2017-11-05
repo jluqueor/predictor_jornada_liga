@@ -164,7 +164,7 @@ cargaDia_hemerotecaMarca_fmt2 <- function(fecha_entrada) {
 # Recupera datos de marca con el formato de la hemeroteca de fechas anteriores a [,2015-12-17]
 # --------------------------------------------------------------------------------------------------------------------
 cargaDia_hemerotecaMarca <- function(fecha_entrada) {
-  if (fecha_entrada<as.Date("2015-12-17")) {
+  if (fecha_entrada<=as.Date("2015-12-17")) {
     return(cargaDia_hemerotecaMarca_fmt2(fecha_entrada))
   } else {
     return(cargaDia_hemerotecaMarca_fmt1(fecha_entrada))
@@ -213,17 +213,17 @@ formatFechaJornada <- function (datos) {
 # --------------------------------------------------------------------------------------------------------------------
 formatTeamName <- function(equipo) {
   temp <- tolower(equipo)
-  temp <- gsub(" ", "-", temp)
+  temp <- gsub(" ", "_", temp)
   temp <- gsub("Á", "a", temp)
   temp <- gsub("É", "e", temp)
-  temp <- gsub("Í", "e", temp)
-  temp <- gsub("Ó", "e", temp)
-  temp <- gsub("Ú", "e", temp)
+  temp <- gsub("Í", "i", temp)
+  temp <- gsub("Ó", "o", temp)
+  temp <- gsub("Ú", "u", temp)
   temp <- gsub("á", "a", temp)
   temp <- gsub("é", "e", temp)
-  temp <- gsub("í", "e", temp)
-  temp <- gsub("ó", "e", temp)
-  temp <- gsub("ú", "e", temp)
+  temp <- gsub("í", "i", temp)
+  temp <- gsub("ó", "o", temp)
+  temp <- gsub("ú", "u", temp)
   temp <- gsub("r.", "real", temp, fixed=TRUE)
   return(temp)
 }
@@ -255,23 +255,53 @@ getResults <- function(vYear) {
   
   resultados <- NULL
   for (i in 1:length(jornadas)) {
-    url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_", i, "/", sep="")
-    print(url)
-    #Reading the HTML code from the website
-    tryCatch(doc <- read_html(url)
-             , error = function(e)(doc <<- NULL))
-    if (!is.null(doc)) {
-      fecha <- html_text(html_nodes(doc, '.fecha'))
-      teamsName <<- html_text(html_nodes(doc, '.equipo'))
+    if ((vYear=="2013") & (i==38)) {
+      print("datos erroneos marca jornada 38 temporada 2013-14, generando datos estáticos")
+      fecha <- as.Date("2014-05-18")
+      teamsName <- c("Barcelona", "Atlético", "Athletic", "Villarreal", "R. Madrid", "Espanyol", "R. Sociedad", "Celta", "Granada", "Valencia", "Rayo", 
+                     "Almería", "Getafe", "Sevilla", "Elche", "Levante", "Betis", "Valladolid", "Málaga", "Osasuna")
       teamsPath <<- sapply(teamsName, formatTeamName)
-      points <- html_text(html_nodes(doc, '.pts'))
-      points <- points[2:length(points)]
+      points <- c(87, 90, 70, 59, 87, 42, 59, 49, 41, 49, 43, 40, 42, 63, 40, 48, 25, 36, 45, 39)
       
       resultados <- rbind(resultados,
                           cbind(teamsName, teamsPath, temporada, i, points))
+    } else {
+      if ((vYear=="2012") & (i==3)) {
+        print("datos erroneos marca jornada 3 temporada 2012-13, generando datos estáticos")
+        fecha <- as.Date("2012-09-02")
+        teamsName <- c("Barcelona", "Valladolid", "Rayo", "Atlético", "Deportivo", "Mallorca", "Sevilla", "Málaga", "Betis", "Getafe", "Zaragoza", 
+                       "R. Sociedad", "Valencia", "R. Madrid", "Granada", "Levante", "Espanyol", "Celta", "Osasuna", "Athletic")
+        teamsPath <<- sapply(teamsName, formatTeamName)
+        points <- c(9, 6, 7, 7, 5, 7, 5, 7, 3, 4, 3, 3, 2, 4, 1, 4, 0, 3, 0, 3)
+        
+        resultados <- rbind(resultados,
+                            cbind(teamsName, teamsPath, temporada, i, points))
+        
+      } else {
+        url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_", i, "/", sep="")
+        print(url)
+        #Reading the HTML code from the website
+        tryCatch(doc <- read_html(url)
+                 , error = function(e)(doc <<- NULL))
+        if (!is.null(doc)) {
+          fecha <- html_text(html_nodes(doc, '.fecha'))
+          teamsName <<- html_text(html_nodes(doc, '.equipo'))
+          teamsPath <<- sapply(teamsName, formatTeamName)
+          points <- html_text(html_nodes(doc, '.pts'))
+          points <- points[2:length(points)]
+          
+          resultados <- rbind(resultados,
+                              cbind(teamsName, teamsPath, temporada, i, points))
+          
+        }
+      } 
     }
   }
-  return(list(fJornadas, resultados))
+  resultados <- as.data.frame(resultados, row.names = FALSE, stringsAsFactors = FALSE)
+  resultados[,"i"] <- as.integer(resultados[,"i"])
+  resultados[,"points"] <- as.integer(resultados[,"points"])
+  resultados[,"fecha"] <- as.Date(fJornadas[resultados[,"i"]])
+  return(resultados)
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # procesaTemporada:
@@ -280,20 +310,21 @@ getResults <- function(vYear) {
 # ---------------------------------------------------------------------------------------------------------------------
 procesaTemporada <- function(year) {
   articlesSeason <- NULL
-  a<-getResults(year)
-  recFecha <- as.Date(a[[1]][1])-7
-  dias<-as.Date(a[[1]][length(a[[1]])])-as.Date(a[[1]][1])-7
+  resultados<-getResults(year)
+  recFecha <- min(resultados$fecha)-7
+  dias<-max(resultados$fecha)-(min(resultados$fecha)-7)
   for (i in (1:dias)) {
     articlesSeason <- as.data.frame(rbind(articlesSeason, cargaDia_hemerotecaMarca(recFecha)))
     recFecha <- recFecha + 1
   }
   articlesSeason <- unique(articlesSeason[,1:5])
-  save(articlesSeason, file=paste("D:/TRAPICHEO/data.frame/articulos_", year, ".Rda", sep=""))
+  write.csv(resultados,  file=paste("resultados_", year, ".csv", sep=""), row.names=FALSE, quote=TRUE, fileEncoding="UTF-8")
+  write.csv(articlesSeason,  file=paste("articulos_", year, ".csv", sep=""), row.names=FALSE, quote=TRUE, fileEncoding="UTF-8")
 }
+setwd("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga/data.frame")
 procesaTemporada("2016")
 procesaTemporada("2015")
 procesaTemporada("2014")
 procesaTemporada("2013")
 procesaTemporada("2012")
-procesaTemporada("2011")
 
