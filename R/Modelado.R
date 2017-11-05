@@ -280,7 +280,20 @@ for (i in seq(from=900, to=1200, by=100)) {
 }
 resumen <- muestraResultados(path, xCarpeta)
 
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
 
+a <- procesaModelo("X"=datos[xRandom,],
+                   "target"=datos$Evolucion[xRandom],
+                   "strWords"=strPalabras,
+                   "cmm"=cmm_palabras,
+                   "condTrain"=(1:(round(nrow(datos)*0.8))),
+                   "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                   parametros="random_palabras_10Rounds_6meses",
+                   iteraciones=10,
+                   xLambda=1000,xNround=200)
+
+resumen <- muestraResultados(path, xCarpeta)
 
 
 

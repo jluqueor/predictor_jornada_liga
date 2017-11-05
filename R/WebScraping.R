@@ -13,7 +13,7 @@ setwd("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
 # Comprueba si el equipo sobre el que se comenta en el artículo, es uno de los que participan en la competición
 # --------------------------------------------------------------------------------------------------------------------
 existsTeam <- function(teamPath) {
-  return(length(which(teamsPath==teamPath)) > 0)
+  return((length(which(teamsPath==teamPath)) > 0) | (length(which(teamsPath2==teamPath)) > 0))
 }
 # --------------------------------------------------------------------------------------------------------------------
 # cargaDia_hemerotecaMarca_fmt1:
@@ -227,6 +227,27 @@ formatTeamName <- function(equipo) {
   temp <- gsub("r.", "real", temp, fixed=TRUE)
   return(temp)
 }
+# --------------------------------------------------------------------------------------------------------------------
+# formatTeamName2:
+# ===============
+# Formatea los nombres de los equipos de futbol acordes a formato usado en path del marca
+# --------------------------------------------------------------------------------------------------------------------
+formatTeamName2 <- function(equipo) {
+  temp <- tolower(equipo)
+  temp <- gsub(" ", "-", temp)
+  temp <- gsub("Á", "a", temp)
+  temp <- gsub("É", "e", temp)
+  temp <- gsub("Í", "i", temp)
+  temp <- gsub("Ó", "o", temp)
+  temp <- gsub("Ú", "u", temp)
+  temp <- gsub("á", "a", temp)
+  temp <- gsub("é", "e", temp)
+  temp <- gsub("í", "i", temp)
+  temp <- gsub("ó", "o", temp)
+  temp <- gsub("ú", "u", temp)
+  temp <- gsub("r.", "real", temp, fixed=TRUE)
+  return(temp)
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # getResults:
 # ==========
@@ -261,10 +282,11 @@ getResults <- function(vYear) {
       teamsName <- c("Barcelona", "Atlético", "Athletic", "Villarreal", "R. Madrid", "Espanyol", "R. Sociedad", "Celta", "Granada", "Valencia", "Rayo", 
                      "Almería", "Getafe", "Sevilla", "Elche", "Levante", "Betis", "Valladolid", "Málaga", "Osasuna")
       teamsPath <<- sapply(teamsName, formatTeamName)
+      teamsPath2 <<- sapply(teamsName, formatTeamName2)
       points <- c(87, 90, 70, 59, 87, 42, 59, 49, 41, 49, 43, 40, 42, 63, 40, 48, 25, 36, 45, 39)
       
       resultados <- rbind(resultados,
-                          cbind(teamsName, teamsPath, temporada, i, points))
+                          cbind(teamsName, teamsPath, teamsPath2, temporada, i, points))
     } else {
       if ((vYear=="2012") & (i==3)) {
         print("datos erroneos marca jornada 3 temporada 2012-13, generando datos estáticos")
@@ -272,10 +294,11 @@ getResults <- function(vYear) {
         teamsName <- c("Barcelona", "Valladolid", "Rayo", "Atlético", "Deportivo", "Mallorca", "Sevilla", "Málaga", "Betis", "Getafe", "Zaragoza", 
                        "R. Sociedad", "Valencia", "R. Madrid", "Granada", "Levante", "Espanyol", "Celta", "Osasuna", "Athletic")
         teamsPath <<- sapply(teamsName, formatTeamName)
+        teamsPath2 <<- sapply(teamsName, formatTeamName2)
         points <- c(9, 6, 7, 7, 5, 7, 5, 7, 3, 4, 3, 3, 2, 4, 1, 4, 0, 3, 0, 3)
         
         resultados <- rbind(resultados,
-                            cbind(teamsName, teamsPath, temporada, i, points))
+                            cbind(teamsName, teamsPath, teamsPath2, temporada, i, points))
         
       } else {
         url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_", i, "/", sep="")
@@ -287,11 +310,12 @@ getResults <- function(vYear) {
           fecha <- html_text(html_nodes(doc, '.fecha'))
           teamsName <<- html_text(html_nodes(doc, '.equipo'))
           teamsPath <<- sapply(teamsName, formatTeamName)
+          teamsPath2 <<- sapply(teamsName, formatTeamName2)
           points <- html_text(html_nodes(doc, '.pts'))
           points <- points[2:length(points)]
           
           resultados <- rbind(resultados,
-                              cbind(teamsName, teamsPath, temporada, i, points))
+                              cbind(teamsName, teamsPath, teamsPath2, temporada, i, points))
           
         }
       } 

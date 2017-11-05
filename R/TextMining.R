@@ -90,7 +90,7 @@ pintaWordClouds <- function(corpus) {
 setwd("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga/data.frame")
 
 datos<-read.csv("tablon_2012.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8")
-#datos<-rbind(datos, read.csv("tablon_2013.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
+datos<-rbind(datos, read.csv("tablon_2013.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 datos<-rbind(datos, read.csv("tablon_2014.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 datos<-rbind(datos, read.csv("tablon_2015.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 datos<-rbind(datos, read.csv("tablon_2016.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
