@@ -29,6 +29,8 @@ Se puede acceder a los articulos publicados en cada fecha desde el año 2009. La
 
 ![Hemeroteca Marca](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/hemerotecaMarca.JPG)
 
+(Imagen de la página de marca. Se incluye aquí a modo demostrativo y para motivos educativos. Puede acceder a la web original desde este enlace [Hemeroteca Marca](http://www.marca.com/hemeroteca/2017/)
+
 Esto es especialmente interesante ya que nos permite acceder a la información específica que queremos estudiar.
 
 #### Resultados de cada jornada
