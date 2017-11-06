@@ -74,6 +74,9 @@ hacerTransformacion <- function(year) {
   # De los datos, sacamos la fecha de publicación y la convertimos a Date
   recortes$fecha <- as.Date(paste(recortes$year,recortes$month,recortes$day, sep="-"))
 
+  # normaliza cambio en nombre de equipos (separadores usados '-' y '_' en distintos periodos)
+  recortes$teamsPath <- gsub("-", "_", recortes$teamsPath)
+  
   # Concatenamos los diferentes articulos escritos sobre un equipo y fecha en un único string
   articulos <- aggregate(articulo ~ teamsPath + fecha, recortes, paste, collapse=" ")
   
@@ -107,8 +110,12 @@ hacerTransformacion <- function(year) {
 } 
 
 setwd("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga/data.frame")
+hacerTransformacion("2017")
 hacerTransformacion("2016")
 hacerTransformacion("2015")
 hacerTransformacion("2014")
 hacerTransformacion("2013")
 hacerTransformacion("2012")
+
+
+

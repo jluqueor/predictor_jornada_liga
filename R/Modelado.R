@@ -38,9 +38,9 @@ creaCarpeta <- function(path) {
 # =============
 # Lanza un entrenamiento
 # --------------------------------------------------------------------------------------
-entrenaModelo <- function(train, Y, xEta=0.3, xLambda=1.0, xSubsample=1.0, xAlpha=0, xNthread=10, xLambdaBias=0, xNround=100, xModel=NULL, xSave="xgboost.model", saveModel=TRUE) {
+entrenaModelo <- function(train, Y, xEta=0.3, xLambda=1.0, xSubsample=1.0, xMaxDepth=6, xAlpha=0, xGamma=0, xNthread=10, xLambdaBias=0, xNround=100, xModel=NULL, xSave="xgboost.model", saveModel=TRUE) {
   param <- list( # https://github.com/dmlc/xgboost/blob/master/doc/parameter.md
-    max.depth = 6
+    max.depth = xMaxDepth
     , objective = "multi:softmax"
     , num_class = 3
     , booster="gbtree"
@@ -52,6 +52,7 @@ entrenaModelo <- function(train, Y, xEta=0.3, xLambda=1.0, xSubsample=1.0, xAlph
     , lambda=xLambda             # L2 regularization
     , lambda_bias=xLambdaBias    # L2 regularization
     , alpha=xAlpha               # L1 regularization
+    , gamma=xGamma
     , base_score=0.5
   )
   
@@ -221,51 +222,207 @@ setwd(paste(path, xCarpeta, sep=""))
 for (i in seq(from=0, to=1, by=0.1)) {
   a <- procesaModelo("X"=datos[xRandom,],
                      "target"=datos$Evolucion[xRandom],
-                     "strWords"=strPalabras,
-                     "cmm"=cmm_palabras,
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
                      "condTrain"=(1:(round(nrow(datos)*0.8))),
                      "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
                      parametros="random_palabras_10Rounds_6meses",
                      iteraciones=1,
-                     xLambda=i,xNround=100)
+                     xLambda=i,xNround=75)
 }
 for (i in seq(from=2, to=10, by=1)) {
   a <- procesaModelo("X"=datos[xRandom,],
                      "target"=datos$Evolucion[xRandom],
-                     "strWords"=strPalabras,
-                     "cmm"=cmm_palabras,
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
                      "condTrain"=(1:(round(nrow(datos)*0.8))),
                      "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
                      parametros="random_palabras_10Rounds_6meses",
                      iteraciones=1,
-                     xLambda=i,xNround=100)
+                     xLambda=i,xNround=75)
 }
 for (i in seq(from=20, to=100, by=10)) {
   a <- procesaModelo("X"=datos[xRandom,],
                      "target"=datos$Evolucion[xRandom],
-                     "strWords"=strPalabras,
-                     "cmm"=cmm_palabras,
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
                      "condTrain"=(1:(round(nrow(datos)*0.8))),
                      "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
                      parametros="random_palabras_10Rounds_6meses",
                      iteraciones=1,
-                     xLambda=i,xNround=100)
+                     xLambda=i,xNround=75)
 }
 for (i in seq(from=200, to=1000, by=100)) {
   a <- procesaModelo("X"=datos[xRandom,],
                      "target"=datos$Evolucion[xRandom],
-                     "strWords"=strPalabras,
-                     "cmm"=cmm_palabras,
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
                      "condTrain"=(1:(round(nrow(datos)*0.8))),
                      "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
                      parametros="random_palabras_10Rounds_6meses",
                      iteraciones=1,
-                     xLambda=i,xNround=100)
+                     xLambda=i,xNround=75)
 }
 resumen <- muestraResultados(path, xCarpeta)
 
 xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
 setwd(paste(path, xCarpeta, sep=""))
+
+for (i in seq(from=2000, to=10000, by=1000)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_palabras_10Rounds_6meses",
+                     iteraciones=1,
+                     xLambda=i,xNround=75)
+}
+
+resumen <- muestraResultados(path, xCarpeta)
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+for (i in seq(from=0, to=1, by=0.1)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_varGamma2",
+                     iteraciones=1,
+                     xGamma=i,xNround=75)
+}
+for (i in seq(from=2, to=20, by=1)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_varGamma20",
+                     iteraciones=1,
+                     xGamma=i,xNround=75)
+}
+for (i in seq(from=30, to=100, by=10)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_varGamma100",
+                     iteraciones=1,
+                     xGamma=i,xNround=75)
+}
+resumen <- muestraResultados(path, xCarpeta)
+
+# seleccionado gamma al valor de 10.
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+for (i in seq(from=0, to=0.3, by=0.01)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_Gamma10_varEta",
+                     iteraciones=1,
+                     xGamma=10,xEta=i,xNround=75)
+}
+for (i in seq(from=0.3, to=1, by=0.1)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_Gamma10_varEta1",
+                     iteraciones=1,
+                     xGamma=10,xEta=i,xNround=75)
+}
+resumen <- muestraResultados(path, xCarpeta)
+
+# el mejor Eta a 1 
+# comprobando si mejora con subsample
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+for (i in seq(from=0.5, to=1, by=0.05)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_Gamma10_Eta1_varSubsample",
+                     iteraciones=1,
+                     xGamma=10,xEta=1,xSubsample=i,xNround=75)
+}
+resumen <- muestraResultados(path, xCarpeta)
+
+# El mejor valor de Subsample obtenido es a 1
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+for (i in seq(from=3, to=10, by=1)) {
+  a <- procesaModelo("X"=datos[xRandom,],
+                     "target"=datos$Evolucion[xRandom],
+                     "strWords"=strLemas,
+                     "cmm"=cmm_lemas,
+                     "condTrain"=(1:(round(nrow(datos)*0.8))),
+                     "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                     parametros="random_lemas_75Rounds_Gamma10_Eta1_varSubsample1_varMaxdepth",
+                     iteraciones=1,
+                     xGamma=10,xEta=1,xSubsample=1,xMaxDepth=i,xNround=75)
+}
+resumen <- muestraResultados(path, xCarpeta)
+
+# El primer valor mejor es 5.fijamos a este valor
+# Entrenamos con 1000 iteraciones
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+a <- procesaModelo("X"=datos[xRandom,],
+                   "target"=datos$Evolucion[xRandom],
+                   "strWords"=strLemas,
+                   "cmm"=cmm_lemas,
+                   "condTrain"=(1:(round(nrow(datos)*0.8))),
+                   "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                   parametros="random_lemas_75Rounds_Gamma10_Eta1_varSubsample1_varMaxdepth",
+                   iteraciones=10,
+                   xGamma=10,xEta=1,xSubsample=1,xMaxDepth=5,xNround=100)
+
+resumen <- muestraResultados(path, xCarpeta)
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep=""))
+
+a <- procesaModelo("X"=datos[xRandom,],
+                   "target"=datos$Evolucion[xRandom],
+                   "strWords"=strLemas,
+                   "cmm"=cmm_lemas,
+                   "condTrain"=(1:(round(nrow(datos)*0.8))),
+                   "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                   parametros="random_lemas_75Rounds_Gamma10_Eta1_varSubsample1_varMaxdepth",
+                   iteraciones=10,
+                   xGamma=8,xEta=1,xSubsample=1,xMaxDepth=5,xNround=100)
+
+resumen <- muestraResultados(path, xCarpeta)
+
+
+
+xCarpeta <- creaCarpeta("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga")
+setwd(paste(path, xCarpeta, sep="")) 
 
 for (i in seq(from=900, to=1200, by=100)) {
   a <- procesaModelo("X"=datos[xRandom,],
@@ -338,3 +495,22 @@ write.table(resumen[0,],
             append=TRUE, col.names=TRUE, row.names=FALSE)
 
 setwd(temp) 
+
+resumen <- read_delim(paste(path, carpeta, "/resumen.txt", sep=""), " ", escape_double = FALSE, trim_ws = TRUE)
+
+iter <- trunc(dim(resumen)[1]*1.2)
+
+
+
+
+resumen <- read_delim(paste(path, xCarpeta, "/resumen.txt", sep=""), " ", escape_double = FALSE, trim_ws = TRUE)
+
+iter <- trunc(dim(resumen)[1]*1.2)
+
+# f1_score
+plot(x=c(1,iter), y=c(0,1), type="n", xlab="iteraciones", ylab="score")
+lines(resumen$Train_f1_score, type="l", col="red")
+lines(resumen$Dev_f1_score, type="l", col="blue")
+legend("topright", legend=c("Train", "Dev"), fill = c("red", "blue"), border= c("red", "blue"))
+title("F1 score", xlab="iteraciones", ylab="score")
+

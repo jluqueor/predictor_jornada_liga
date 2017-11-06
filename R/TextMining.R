@@ -1,3 +1,10 @@
+install.packages("DBI")         
+install.packages("NLP")         
+install.packages("tm")          
+install.packages("SnowballC")   
+install.packages("sqldf")
+install.packages("wordcloud")
+install.packages("RColorBrewer")
 library(DBI)         
 library(NLP)         
 library(tm)          
@@ -48,13 +55,20 @@ lematizar<-function(texto){
   paste(lemas[lemas!=""], collapse=" ")
 }
 
+# --------------------------------------------------------------------------------------
+# pintaWordClouds:
+# ===============
+# Presenta en modo wordCloud la lista de las palabras:
+# - Las que más aparecen.
+# - Las que más aparecen pero que aparecen menos de 300 veces.
+# - Las que más aparecen pero que aparecen menos de 100 veces.
+# --------------------------------------------------------------------------------------
 pintaWordClouds <- function(corpus) {
   tdm <- TermDocumentMatrix(corpus, control=list(removePunctuation=TRUE, bounds=list(global=c(10, Inf))))
   m <- as.matrix(tdm)
   v <- sort(rowSums(m), decreasing=TRUE)
   d<- data.frame(words=names(v), freq=v)
-  head(d, 10)
-  
+
   set.seed(1234)
   
   wordcloud(words = d$word, freq = d$freq, min.freq = 1,
@@ -65,8 +79,7 @@ pintaWordClouds <- function(corpus) {
   m <- as.matrix(tdm)
   v <- sort(rowSums(m), decreasing=TRUE)
   d<- data.frame(words=names(v), freq=v)
-  head(d, 10)
-  
+
   set.seed(1234)
   
   wordcloud(words = d$word, freq = d$freq, min.freq = 1,
@@ -77,14 +90,30 @@ pintaWordClouds <- function(corpus) {
   m <- as.matrix(tdm)
   v <- sort(rowSums(m), decreasing=TRUE)
   d<- data.frame(words=names(v), freq=v)
-  head(d, 10)
-  
+
   set.seed(1234)
   
   wordcloud(words = d$word, freq = d$freq, min.freq = 1,
             max.words=200, random.order=FALSE, rot.per=0.35, 
             colors=brewer.pal(8, "PRGn"))
   
+}
+# --------------------------------------------------------------------------------------
+# pintaWordCloud:
+# ===============
+# Presenta en modo wordCloud la lista de las palabras que más aparecen en un Corpus
+# --------------------------------------------------------------------------------------
+pintaWordCloud <- function(corpus) {
+  tdm <- TermDocumentMatrix(corpus, control=list(removePunctuation=TRUE, bounds=list(global=c(10, Inf))))
+  m <- as.matrix(tdm)
+  v <- sort(rowSums(m), decreasing=TRUE)
+  d<- data.frame(words=names(v), freq=v)
+
+  set.seed(1234)
+  
+  wordcloud(words = d$word, freq = d$freq, min.freq = 1,
+            max.words=200, random.order=FALSE, rot.per=0.35, 
+            colors=brewer.pal(8, "Dark2"))
 }
 
 setwd("C:/Users/Carlos/iCloudDrive/Proyectos/PrediccionCampeonLiga/data.frame")
@@ -94,6 +123,7 @@ datos<-rbind(datos, read.csv("tablon_2013.csv", stringsAsFactors = FALSE, fileEn
 datos<-rbind(datos, read.csv("tablon_2014.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 datos<-rbind(datos, read.csv("tablon_2015.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 datos<-rbind(datos, read.csv("tablon_2016.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
+datos<-rbind(datos, read.csv("tablon_2017.csv", stringsAsFactors = FALSE, fileEncoding="UTF-8"))
 
 datos <- datos[!is.na(datos$articulos),]
 datos <- datos[trimws(datos$articulos)!="",]
@@ -128,6 +158,15 @@ dtm <- DocumentTermMatrix(corpus, control=list(removePunctuation=TRUE, bounds=li
 strPalabras <- dtm$dimnames$Terms
 
 pintaWordClouds(corpus)
+
+# WordCloud por temporada
+for (i in 1:length(levels(as.factor(datos$temporada)))) {
+  pintaWordCloud(Corpus(VectorSource(cmm_palabras[datos$temporada==levels(as.factor(datos$temporada))[i]])))
+}
+# WordCloud por evolución
+for (i in 1:length(levels(as.factor(datos$Evolucion)))) {
+  pintaWordCloud(Corpus(VectorSource(cmm_palabras[datos$Evolucion==levels(as.factor(datos$Evolucion))[i]])))
+}
 
 rm(corpus, dtm)
 
