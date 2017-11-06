@@ -57,7 +57,8 @@ Descargada la información debemos proceder a ajustarla de modo que se ajuste al
     * Si adquirió más de un punto, el equipo ha mejorado.
 * Agrupar la información de cada equipo por cada jornada, texto de los artículos publicados y evolución de sus resultados en esa jornada.
 
-En la siguiente url se detalla el proceso realizado:
+En la siguiente url se detalla el proceso realizado: ![Transformación](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/Transformacion.md)
+
 
 ### Text Mining
 
@@ -66,7 +67,7 @@ En este punto pasamos a realizar el análisis del texto y generar información q
 * Establecemos grupos de datos para entrenamiento, pruebas y validación de los modelos que generemos. El conjunto de validación lo reservaremos para permitir validar que tal se comporta el modelo final que generemos. 
 * Convertiremos cada texto en un vector que represente las palabras utilizadas en los articulos referentes a cada equipo.
 
-En la siguiente url se puede consultar el detalle de este proceso.
+En la siguiente url se puede consultar el detalle de este proceso: ![Text Mining](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/TextMining.md)
 
 ### Modelado
 
@@ -74,12 +75,12 @@ Con los datos convertidos en información numérica y seleccionados los datos de
 
 Se muestran además formas de implementar ejecuciones sucesivas de entrenamiento con diferentes parámetros de manera que se facilite la comprobación de los mejores valores para los parámetros.
 
-En el siguiente enlace se describe el proceso realizado.
+En el siguiente enlace se describe el proceso realizado: ![Modelado](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/Modelado.md)
 
 ### Evaluación
 
 La evaluación de los modelos generados puede ser más o menos compleja. Como ejemplo se muestran formas de presentar la información de manera que se pueda evaluar que tal se está comportando el modelado y hacia donde debemos adaptar los parámetros para obtener mejores resultados.
 
-En la siguiente url se describe el proceso propuesto para la presentación de la información y algunos ejemplos prácticos.
+En la siguiente url se describe el proceso propuesto para la presentación de la información y algunos ejemplos prácticos (se comparte la página donde se describe el modelado): ![Modelado](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/Modelado.md)
 
 
