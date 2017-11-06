@@ -29,7 +29,7 @@ Al generar la matriz de documentos - términos, le indicamos que tenga en cuenta
 
 Además nos guardamos la información del cojunto de palabras que forman el vocabulario completo. Esto es necesario ya que el vector de palabras tiene una estructura concreta (cada columna del vector representa a una palabra concreta) y cuando se realice el entrenamiento, validación y predicción será necesario generar las mismas estructuras para que el sistema funcione correctamente.
 
-Como información del vocabulario, el siguiente diagrama muestra el conjunto de palabras más utilizado en el conjunto de artículos (en formato wordCloud y generado con la función *****wordCloud***** del paquete del mismo nombre:
+Como información del vocabulario, el siguiente diagrama muestra el conjunto de palabras más utilizado en el conjunto de artículos (en formato ***nube de palabras*** y generado con la función *****wordCloud***** del paquete del mismo nombre:
 
 ![palabras más frecuentes](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/wordCloud_todas.JPG)
 
