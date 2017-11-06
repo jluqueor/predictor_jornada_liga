@@ -41,7 +41,11 @@ El planteamiento es tratar de predecir el resultado que va a obtener un equipo d
 
 Para ello tendremos que tener los articulos de un equipo correspondientes a los días previos a una jornada y, para el entrenamiento, información del resultado (target).
 
-Disponemos de los puntos que cada equipo ha obtenido en cada jornada, pero lo que queremos identificar es como ha evolucionado cada equipo, es decir, si pierde, empata o gana.
+Disponemos de los puntos que cada equipo ha obtenido en cada jornada. Para analizar la evolución, se ha optado primero por formar una matriz con un registro por equipo y añadiendo como nuevas columnas la información de los puntos obtenidos en cada jornada:
+
+![Matriz Jornadas](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/matrizJornadas.JPG)
+
+Para calcular la evolución, analizamos que ha hecho cada equipo en cada jornada, es decir, si ganó, empató o perdió.
 
 Para realizar este cálculo, compararemos el resultado de la jornada con el resultado de la jornada anterior:
 * Si tiene los mismos puntos, el equipo perdió el partido. Consideramos este caso como una evolución negativa y le daremos el valor -1
@@ -50,108 +54,22 @@ Para realizar este cálculo, compararemos el resultado de la jornada con el resu
 
 ![Evolución](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/capturaEvolucion.JPG)
 
-Para realizar estos cálculos se ha optado primero por formar una matriz con un registro por equipo y añadiendo como nuevas columnas la información de los puntos obtenidos en cada jornada:
+Por otro lado, los textos de los artículos escritos sobre cada equipo, los tenemos en varias filas (una por artículo) y disponemos de varios días de información. 
 
+Primero agrupamos todos los artículos escritos para un equipo en un día, concatenando los textos uno a continuación del otro:
 
-o en este caso 
+    articulos <- aggregate(articulo ~ teamsPath + fecha, recortes, paste, collapse=" ")
 
+El siguiente paso es identificar a que jornada corresponde cada artículo. Esto lo hacemos en base a la fecha de publicación y las fechas de la jornada anterior y la jornada siguiente:
 
+![Selección artículos](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/articulosJornada.JPG)
 
-Así el proceso formatea una matriz con un registro por cada equipocon El objetivo es, dado un conjunto de articulos escritos en un entrenamiento de modelo Se quieren utilizar los datos para entrenar un modelo que nos permita realizar predicciones futuras con nuevos datos. Se trata de formatear los datos para que se puedan a una estructura idónea para ser tratados en un proceso de modelado. 
-En este caso, la estructuraEl modelado que se pretende realizar Se trata de formatear los datos de manera que se puedan utilizar 
-, con la fecha y el equipo relacionado.
+Agrupamos los artículos de un equipo que corresponden a la misma jornada en un único registro de manera similar a como lo realizamos antes:
 
-En este identificando el equipo al que hace referencia cada uno de los artículos cadaProceso de rastreo de las páginas de **Marca** para obtener de su hemeroteca información de artículos publicados e información de estadísticas por jornada.
+    articulosJornada <- aggregate(articulo ~ teamsPath + jornada, articulos, paste, collapse=" ")
 
-Hay multitud de sitios web y modos de realizar '***webscraping***'. Para realizar el proceso desde código R, en este proyecto utilizamos el paquete *****rvest***** y nos hemos ayudado de las descripciones que se realizan sobre este paquete en esta página: [beginners guide](https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/).
+Una vez terminado el proceso, descargamos la información a un tablón con la estructura:
 
-Para realizar '***webscraping***' se requiere tener unos conocimientos mínimos del lenguaje **HTML** y de como se codifican las páginas web. Normalmente, no queremos la totalidad de información que aparece en una página web y es necesario identificar que partes de la misma queremos sacar. Para el caso de las páginas de **Marca**, nos interesa la información de los diferentes artículos que se incluyen en el diario en cada día de su hemeroteca, concretamente los enlaces a los artículos completos, siendo necesario analizar la estructura de los artículos completos para poder sacar exclusivamente la información del texto de los artículos.
+![Tablón de datos](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/viewTablon.JPG)
 
-Para ayudar a realizar esta tarea, en la documentación del propio paquete de *****rvest***** aconsejan utilizar un selector de **CSS**, en concreto usar el ***plugin*** [selector gadget](http://selectorgadget.com/) que se incorpora como elemento del navegador **Chrome**.
-
-![Selector CSS](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/webScrapingSelectorCSS.JPG).
-
-También ayuda explorar el código de la página web, por ejemplo con la funcionalidad **inspeccionar** del navegador **Chrome**:
-
-![Inspeccionar](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/InspeccionarElementoChrome.JPG)
-
-El código que realiza el webscraping está en el módulo *****WebScraping.R*****. A continuación se describe detalladamente el proceso de webscraping correspondiente a la captura de información de estadísticas de cada jornada. El resto del código se puede descargar del proyecto.
-
-    # -----------------------------------------------------------------------------------------------
-    # getResults:
-    # ==========
-    # Busqueda de equipos que participan en una temporada, las fechas de cada jornada  y los 
-    # resultados obtenidos por cada equipo
-    # -----------------------------------------------------------------------------------------------
-    getResults <- function(vYear) {
-      temporada <- paste(vYear, substring(as.double(vYear)+1, 3, 4), sep="_")
-      url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_1/", sep="")
-
-Se Formatea la ruta **http** correspondiente a la temporada que queremos consultar.
-
-      doc <- read_html(url)
-
-La función *****read_html***** del paquete *****rvest***** lee la información de una página web y la guarda formateada con la estructura **html** de origen.
-
-      lJornadas <- html_attrs(html_children(html_children(html_children(html_nodes(doc, '.navegacion-jornadas')))))
-      
-En el proceso de análisis de la página de estadísticas, hemos detectado que el área que contiene la información de jornadas está etiquetada con la clase **.navegacion-jornadas**. Una vez posicionados en este elemento, navegamos hasta la etiqueta **<a>** que se encuentra a tres niveles de profundidad. El resultado que obtenemos es una lista con las jornadas que incluye esta temporada.
-
-      calendario <- NULL
-      for (jornada in lJornadas) {
-        calendario <- rbind(calendario, jornada["title"])
-      }
-  
-Recorremos la lista de jornadas capturando la fecha de la misma.
-
-      charCalen <- strsplit(calendario, split=" ")
-
-Cada elemento de charCalen tiene la forma ***<dia1> **"y"** <dia2> <mes>***.
-Tomamos el valor de ***<dia2>*** (3 posición):
-    
-      vDays <- unlist(lapply(charCalen, function(x) {x[3]}))
-
-Tomamos el valor de ***<mes>*** (4 posición)
-    
-      vMonths <- unlist(lapply(charCalen, function(x) {x[4]}))
-
-Convertimos la información capturada en datos tipo fecha (Una fecha por cada jornada).
-
-      fJornadas <- apply(data.frame(vDays, vMonths, vYear, stringsAsFactors=FALSE), 1, formatFechaJornada) 
-
-La función **formatFechaJornada** está definida en el código R que estamos describiendo(*****Webscraping.R*****).
-
-A continuación procedemos a capturar la información de estadísticas de cada jornada:
-
-      resultados <- NULL
-      for (i in 1:length(lJornadas)) {
-        url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_", i, "/", sep="")
-        
-Incluimos un **tryCatch** para que no se corte el proceso en el caso de producirse un enlace incorrecto.
-
-        tryCatch(doc <- read_html(url)
-                 , error = function(e)(doc <<- NULL))
-                 
-Marcamos a **NULL** el valor de la variable **doc** en el caso de no encontrar la página. Esto nos permite no realizar tratamiento si la variable es NULL:
-
-        if (!is.null(doc)) {
-
-Por cada una de las páginas de estadísticas de la jornada, se busca la información de fecha, equipos que participan en la jornada y puntos obtenidos al finalizar la misma. Previamente hemos investigado estas páginas para determinar que etiquetas tenemos que buscar (*****.fecha*****, *****.equipo***** y *****.pts*****) 
-
-          fecha <- html_text(html_nodes(doc, '.fecha'))
-          teamsName <<- html_text(html_nodes(doc, '.equipo'))
-          teamsPath <<- sapply(teamsName, formatTeamName)
-          points <- html_text(html_nodes(doc, '.pts'))
-          points <- points[2:length(points)]
-      
-Vamos guardando la información capturada de cada jornada en la variable resultado.
-
-          resultados <- rbind(resultados,
-                              cbind(teamsName, teamsPath, temporada, i, points))
-        }
-      }
-
-Finalmente como resultado de la función se retornan los valores de las fechas de cada jornada y las estadísticas capturadas. La información de las fechas de cada jornada son importantes ya que nos permitirán identificar que articulos de marca corresponden a que periodo entre jornadas.
-
-      return(list(fJornadas, resultados))
-    }
+Ya tenemos la información preparada para el modelado, solo nos falta convertir en algo numérico el texto de los artículos.
