@@ -83,6 +83,6 @@ En el siguiente enlace se describe el proceso realizado: ![Modelado](https://git
 
 La evaluación de los modelos generados puede ser más o menos compleja. Como ejemplo se muestran formas de presentar la información de manera que se pueda evaluar que tal se está comportando el modelado y hacia donde debemos adaptar los parámetros para obtener mejores resultados.
 
-En la siguiente url se describe el proceso propuesto para la presentación de la información y algunos ejemplos prácticos (se comparte la página donde se describe el modelado): ![Modelado](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/Modelado.md)
+En la siguiente url se describe el proceso propuesto para la presentación de la información y algunos ejemplos prácticos (se comparte la página donde se describe el modelado): ![Evaluacion](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/Modelado.md)
 
 
