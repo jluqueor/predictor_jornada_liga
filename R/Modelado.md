@@ -104,7 +104,7 @@ Así tenemos la matriz de confusión en la que las filas indican el resultado re
 ### Métrica precisión
 Calculamos el valor de precisión como:
 
-** Precision = (true positives) / (true positives + false positives)
+**Precision = (true positives) / (true positives + false positives)**
 
     precision <- length(predice[(predice==0 & Y==0) | (predice==2 & Y==2)])/length(Y[predice==0 | predice==2])
     
