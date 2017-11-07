@@ -27,7 +27,11 @@ Así las sentencias que se ejecutan son:
 
 Al generar la matriz de documentos - términos, le indicamos que tenga en cuenta solo aquellas palabras que aparecen al menos 10 veces en el conjunto de documentos. De esta forma eliminamos palabras (que pueden ser errores de escritura) que no van a aportar valor. De igual manera se podría limitar aquellas palabras que aparecen más de un número determinado de veces.
 
-Además nos guardamos la información del conjunto de palabras que forman el vocabulario completo. Esto es necesario ya que el vector de palabras tiene una estructura concreta (cada columna del vector representa a una palabra concreta) y cuando se realice el entrenamiento, validación y predicción será necesario generar las mismas estructuras para que el sistema funcione correctamente.
+Además nos guardamos la información del conjunto de palabras que forman el vocabulario completo. Esto es necesario ya que el vector de palabras tiene una estructura concreta (cada columna del vector representa a una palabra concreta) y cuando se realice el entrenamiento, validación y predicción será necesario generar las mismas estructuras para que el sistema funcione correctamente:
+
+| columna 1 | columna 2 | columna 3 | columna 4 | columna 5 | columna 6 | ... | columna n |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----|-----------|
+| andres    | iniesta   | no        | para      | de        | hacer     | ... | historia  |
 
 Como información del vocabulario, el siguiente diagrama muestra el conjunto de palabras más utilizado en el conjunto de artículos (en formato ***nube de palabras*** y generado con la función *****wordCloud***** del paquete del mismo nombre:
 
