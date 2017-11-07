@@ -34,7 +34,7 @@ Incluye más parámetros pero que se pasan directamente al proceso de entrenamie
 Los pasos que se realizan son:
 
 ### Preparar datos
-Se generan matrices de documentos y términos para los datos recibidos para cada uno de los grupos de datos usados (entrenamiento y prueba). Estas matrices se convierte a sparseMatrix que es el formato que admite ***xgboost*** (es un formato de matriz dispersa, que se caracteríza por ocupar menos espacio que una matrix estándar si los datos que almacena son valores 0 en su mayoría.
+Se generan matrices de documentos y términos para los datos recibidos para cada uno de los grupos de datos usados (entrenamiento y prueba). Estas matrices se convierte a sparseMatrix que es el formato que admite ***xgboost*** (es un formato de matriz dispersa, que se caracteríza por ocupar menos espacio que una matrix estándar si los datos que almacena son valores 0 en su mayoría).
 
 Por ejemplo, para los datos de entrenamiento:
 
@@ -76,7 +76,64 @@ Por cada entrenamiento del modelo, realizamos predicción tanto para los datos d
 
 Decidir si un resultado de modelo se comporta mejor que otro es una tarea compleja. La recomendación es fijar una métrica que será la que iremos comprobando y que nos permitirá decidir si un modelo nos está dando un mejor resultado que otro o si las iteraciones sobre un modelo mejoran el resultado.
 
-En este ejemplo se van a incluir cuatro ejemplos de métricas que se pueden utilizar. Algunas de las métricas ddescritas se utilizan para evaluar el comportamiento en modelos de resultado binario. En este caso tenemos tres posibles resultados para cada evaluación por lo que hay que establecer que validaciones se van a realizar en cada métrica.
+Se incluyen cuatro ejemplos de métricas que se pueden utilizar. Algunas de las métricas descritas se utilizan para evaluar el comportamiento en modelos de resultado binario. En este caso tenemos tres posibles resultados para cada evaluación por lo que hay que establecer que validaciones se van a realizar en cada métrica.
+
+Se considera que el resultado neutro o negativo es el caso del empate. Las situaciones en las que se gana o pierde, las consideraremos como resultados positivos.
+
+|resultado|etiqueta|  caso  |
+|---------|--------|--------|
+|gana     |    2   |positivo|
+|empata   |    1   |negativo|
+|pierde   |    0   |positivo|
+
+Definimos las siguientes variables:
+
+* **true positive (TP)**: Si la predicción es positiva (0, 2) y el resultado real coincide con el valor de la etiqueta.
+* **false positive (FP)**: Si la predicción es positiva (0, 2) y el resultado real no coincide con el valor de la etiqueta.
+* **true negative (TN)**: Si la predicción es negativa (1) y el resultado real coincide con la etiqueta (1).
+* **false negative (FN)**: Si la predicción es negativa (1) pero el resultado real no coincide con el valor de la etiqueta (0 ó 2).
+
+Así tenemos la matriz de confusión en la que las filas indican el resultado real y las columnas la predicción:
+
+|            |0 (pierde)|1 (empata)|2 (gana)|
+|------------|----------|----------|--------|
+| 0 (pierde) |    TP    |    FN    |   FP   |
+| 1 (empata) |    FP    |    TN    |   FP   |
+| 2 (gana)   |    FP    |    FN    |   TP   |
+
+### Métrica precisión
+Calculamos el valor de precisión como:
+
+** Precision = (true positives) / (true positives + false positives)
+
+    precision <- length(predice[(predice==0 & Y==0) | (predice==2 & Y==2)])/length(Y[predice==0 | predice==2])
+    
+La información que proporciona esta medida es la habilidad del modelo para no clasificar como positivo (predicción = 0 ó 2) un valor que es negativo.   
+
+### Métrica recall
+Calculamos el valor de recall como:
+
+**Recall =  (true positives) / (true positives + false negatives)**
+
+    recall <- length(predice[(predice==0 & Y==0) | (predice==2 & Y==2)])/length(Y[(Y==0 & predice==0) | (Y==2 & predice==2) | (Y==0 & predice==1) | (Y==2 & predice==1)])
+
+La interpretación de este modelo es la habilidad del modelo de encontrar todos los ejemplos positivos.
+
+### Métrica F1 score
+Calculamos el valor de F1 score como:
+
+**F1 = 2 * (precision * recall) / (precision + recall)**
+
+    f1_score <- 2*(precision*recall)/(precision+recall)
+    
+F1 score funciona como una medida compensada entre el valor de la precisión y el recall. Permite identificar si el modelo está balanceado sobre estos valores.
+
+### Métrica acierto:
+Calculamos el porcentaje de acierto como:
+
+    acierto <- length(predice[predice==Y])/length(Y)*100
+    
+    
 
 ### 
 
