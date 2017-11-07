@@ -2,7 +2,7 @@
 
 Llegamos al momento de entrenar el modelo y evaluar que tal funciona. No prentende esta guía ser una guía exhaustiva de modelado, solo indicar algunos puntos que hay que tener en cuenta a la hora de entrenar un modelo.
 
-## Entrenamiento
+## Como entrenaremos
 Vamos a utilizar el paquete ***xgboost*** como herramienta para realizar el entrenamiento del modelo.
 
 Tenemos un target que puede tomar tres valores diferentes. Se trata por tanto de un modelo de clasificación multiclase. El objetivo que vamos a utilizar será '**multi:softmax**'. El resultado que obtendremos en predicciones sobre este modelo es una clasificación. si queremos obtener probabilidades, podríamos utilizar '**multi:softprob**'.
@@ -72,7 +72,7 @@ Los convertimos a los valores:
 Repite proceso de entrenamiento tantas veces como se indique por parámetros. 
 Por cada entrenamiento del modelo, realizamos predicción tanto para los datos de entrenamiento como para los datos de prueba y evaluamos el resultado, almacenando en un fichero resumen cual ha sido el resultado.
 
-## Evaluación
+## Como evaluar
 
 Decidir si un resultado de modelo se comporta mejor que otro es una tarea compleja. La recomendación es fijar una métrica que será la que iremos comprobando y que nos permitirá decidir si un modelo nos está dando un mejor resultado que otro o si las iteraciones sobre un modelo mejoran el resultado.
 
@@ -133,16 +133,35 @@ Calculamos el porcentaje de acierto como:
 
     acierto <- length(predice[predice==Y])/length(Y)*100
     
-    
+## Entrenamiento y evaluación    
 
-### 
+Primero lanzaremos un entrenamiento con los valores por defecto:
+
+    a <- procesaModelo("X"=datos[xRandom,],
+                       "target"=datos$Evolucion[xRandom],
+                       "strWords"=strLemas,
+                       "cmm"=cmm_lemas,
+                       "condTrain"=(1:(round(nrow(datos)*0.8))),
+                       "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                       parametros="random_lemas_10Rounds_1jornada",
+                       iteraciones=10,
+                       xNthread=10,
+                       xNround=10)
+
+Después de un tiempo de ejecución, podemos ver los resultados:
+
+    resumen <- muestraResultados(path, xCarpeta)
+    
+Obteniendo los siguientes gráficos:
+
+
 
 diferentes Recomendamos fijar una métrica que se pueda ir comprobando en cada iteración del entrenamiento 
 iteración, la predicción
 ara los datos de entrenamiento:
 
 
-Para llevar a cabo un entrenamiento iterativo sobre el que se van analizando 
+## Conclusiones 
 Los resultados obtenidos no son muy buenos. Se puede trabajar más sobre los datos, seleccionando restricciones de palabras, incorporando más datos (de otros diarios). Como detalle, si analizamos las palabras que más aparecen en los artículos de los equipos, agrupando los comentarios por el tipo de evolución que han tenido (es decir, agrupando los comentarios que han precedido a derrota, un empate o una victoria, independientemente del equipo, tenemos las siguientes ***nubes de palabras***:
 
 ![wordCloud sobre artículos agrupados por evolución de los equipos](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/WordCloudEvolucion.JPG)
