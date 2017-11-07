@@ -21,15 +21,13 @@ El primer paso realizado es la identicación de las fuentes de datos que nos pro
 
 La información identificada en este diario es la siguiente: 
 
-![Webscraping](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/WebScraping.md)
-
 #### Articulos publicados por fecha
 
 Se puede acceder a los articulos publicados en cada fecha desde el año 2009. La estructura de los enlaces incorpora la fecha y acceso a subsecciones de cada deportes (especialmente de de fútbol que nos interesa en este caso), y permite la selección de la categoría a estudiar:
 
 ![Hemeroteca Marca](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/hemerotecaMarca.JPG)
 
-(Imagen de la página de marca. Se incluye aquí a modo demostrativo y para motivos educativos. Puede acceder a la web original desde este enlace [Hemeroteca Marca](http://www.marca.com/hemeroteca/2017/)
+(Imagen de la página de marca. Se incluye aquí a modo demostrativo y para motivos educativos. Puede acceder a la web original desde este enlace '[Hemeroteca Marca](http://www.marca.com/hemeroteca/2017/)').
 
 Esto es especialmente interesante ya que nos permite acceder a la información específica que queremos estudiar.
 
@@ -47,7 +45,7 @@ La obtención de los datos requiere de un análisis detallado de las páginas qu
 
 El proceso de rastreo y captura suele además ser un proceso costoso en tiempo de ejecución, ya que dependemos del ancho de banda que el proveedor del servicio este dando y del número de páginas a descargar y tratar. Puede suceder que la información falle para algún día por lo que es facil que tengamos que repetir el proceso varias veces hasta conseguir el procesamiento completo. 
 
-Se detalla en la siguiente URL el proceso realizado:
+Se detalla en la siguiente URL el proceso realizado: ![Webscraping](https://github.com/jluqueor/predictor_jornada_liga/blob/master/R/WebScraping.md)
 
 ### Transformación
 
