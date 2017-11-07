@@ -14,7 +14,11 @@ También ayuda explorar el código de la página web, por ejemplo con la funcion
 
 ![Inspeccionar](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/InspeccionarElementoChrome.JPG)
 
-El código que realiza el webscraping está en el módulo *****WebScraping.R*****. A continuación se describe detalladamente el proceso de webscraping correspondiente a la captura de información de estadísticas de cada jornada. El resto del código se puede descargar del proyecto.
+La estructura de las páginas de marca que contiene la información que nos interesa, es la siguiente:
+
+![Estructura Hemeroteca Marca](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/estructuraHemerotecaMarca.JPG)
+
+Para capturar la información se ha generado el módulo *****WebScraping.R*****. A continuación se describe detalladamente el proceso de webscraping correspondiente a la captura de información de estadísticas de cada jornada. El resto del código se puede descargar del proyecto.
 
     # -----------------------------------------------------------------------------------------------
     # getResults:
