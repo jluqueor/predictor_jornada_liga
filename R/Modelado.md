@@ -7,7 +7,7 @@ Vamos a utilizar el paquete ***xgboost*** como herramienta para realizar el entr
 
 Tenemos un target que puede tomar tres valores diferentes. Se trata por tanto de un modelo de clasificación multiclase. El objetivo que vamos a utilizar será '**multi:softmax**'. El resultado que obtendremos en predicciones sobre este modelo es una clasificación. si queremos obtener probabilidades, podríamos utilizar '**multi:softprob**'.
 
-Como métrica de evaluación del modelo, usaremos la métrica '***mlogloss***' 
+Como métrica de evaluación del modelo, usaremos la métrica '***mlogloss***'.
 
 Este paquete permite el re-entrenamiento de un modelo obtenido en un entrenamiento anterior. Utilizaremos esta funcionalidad para permitir capturar el resultado cada cierto número de iteraciones y realizar comprobaciones. Además los modelos obtenidos los iremos volcando a disco, de manera que no tengamos que repetir el entrenamiento si hemos detectado que un modelo anterior era mejor o poder continuar un entrenamiento desde un punto dado. 
 
