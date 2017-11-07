@@ -62,7 +62,7 @@ En la siguiente url se detalla el proceso realizado: ![Transformación](https://
 
 ### Text Mining
 
-En este punto pasamos a realizar el análisis del texto y generar información que sea explotable por modelos. EN este ejemplo llevaremos a cabo un análisis estadístico de las palabras utilizadas en cada artículo:
+En este punto pasamos a realizar el análisis del texto y generar información que sea explotable por modelos. En este ejemplo llevaremos a cabo un análisis estadístico de las palabras utilizadas en cada artículo:
 * Identificaremos el vocabulario completo que disponemos. Eliminaremos dígitos, signos de puntuación, palabras que no aporten significado. Puede simplificar el análisis el eliminar aquellas palabras que se utilizan en todos los artículos y que no proporcionan información adicional.
 * Establecemos grupos de datos para entrenamiento, pruebas y validación de los modelos que generemos. El conjunto de validación lo reservaremos para permitir validar que tal se comporta el modelo final que generemos. 
 * Convertiremos cada texto en un vector que represente las palabras utilizadas en los articulos referentes a cada equipo.
