@@ -34,6 +34,19 @@ Por cada equipo, la lista de articulos que se han escrito, identificando la fech
 
 ![view(recortes)](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/viewRecortes.JPG)
 
+La siguiente tabla contiene el detalle del número de artículos recuperados por cada temporada:
+
+| Temporada | Artículos |
+|-----------|-----------|
+|  2012-13  |    32.860 |
+|  2013-14  |    28.948 |
+|  2014-15  |    31.031 |
+|  2015-16  |    48.245 |
+|  2016-17  |    59.132 |
+|  2017-18  |    17.550 |
+
+El número de artículos escritos crece año a año. En la temporada 2016-17 practicamente duplica el número de artículos escritos en la temporada 2012-13.
+
 ## Objetivo de la transformación de los datos.
 Se trata de formatear los datos de manera que se puedan utilizar para entrenar un modelo que luego nos permita realizar predicciones sobre nuevos datos.
 
