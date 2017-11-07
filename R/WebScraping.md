@@ -6,7 +6,7 @@ Hay multitud de sitios web y modos de realizar '***webscraping***'. Para realiza
 
 Para realizar '***webscraping***' se requiere tener unos conocimientos mínimos del lenguaje **HTML** y de como se codifican las páginas web. Normalmente, no queremos la totalidad de información que aparece en una página web y es necesario identificar que partes de la misma queremos sacar. Para el caso de las páginas de **Marca**, nos interesa la información de los diferentes artículos que se incluyen en el diario en cada día de su hemeroteca, concretamente los enlaces a los artículos completos, siendo necesario analizar la estructura de los artículos completos para poder sacar exclusivamente la información del texto de los artículos.
 
-Para ayudar a realizar esta tarea, en la documentación del propio paquete de *****rvest***** aconsejan utilizar un selector de **CSS**, en concreto usar el ***plugin*** [selector gadget](http://selectorgadget.com/) que se incorpora como elemento del navegador **Chrome**.
+Para ayudar a realizar esta tarea, en la documentación del propio paquete de *****rvest***** aconsejan utilizar un selector de **CSS**, en concreto recomienda usar el ***plugin*** [selector gadget](http://selectorgadget.com/) que se incorpora como elemento del navegador **Chrome**.
 
 ![Selector CSS](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/webScrapingSelectorCSS.JPG).
 
