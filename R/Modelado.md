@@ -154,15 +154,108 @@ Después de un tiempo de ejecución, podemos ver los resultados:
     
 Obteniendo los siguientes gráficos:
 
+![lemas_10rounds_10iter](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/lemas_10round_10iter.JPG)
 
+Se observa que tenemos un ajuste perfecto del modelo a los datos de entrenamiento, pero que tenemos un resultado pobre con los datos de prueba. Esto se denomina '***overfiting***.
 
-diferentes Recomendamos fijar una métrica que se pueda ir comprobando en cada iteración del entrenamiento 
-iteración, la predicción
-ara los datos de entrenamiento:
+Es necesario aplicar regulación. Para ver como mejora el uso de la regulación, ajustamos a 75 iteraciones de entrenamiento que en el gráfico anterior hay mucha diferencia (se podría ajustar a valores incluso mejores).
 
+### Tunning Gamma
+
+Si lanzamos varios modelos con varios valores del parámetro gamma:
+
+Variamos gamma entre [0, 1] con incrementos de 0.1:
+
+    for (i in seq(from=0, to=1, by=0.1)) {
+      a <- procesaModelo("X"=datos[xRandom,],
+                         "target"=datos$Evolucion[xRandom],
+                         "strWords"=strLemas,
+                         "cmm"=cmm_lemas,
+                         "condTrain"=(1:(round(nrow(datos)*0.8))),
+                         "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                         parametros="random_lemas_75Rounds_varGamma2",
+                         iteraciones=1,
+                         xGamma=i,xNround=75)
+    }
+    
+Variamos gamma entre [2, 10] con incrementos de 1.0:
+
+    for (i in seq(from=2, to=20, by=1)) {
+      a <- procesaModelo("X"=datos[xRandom,],
+                         "target"=datos$Evolucion[xRandom],
+                         "strWords"=strLemas,
+                         "cmm"=cmm_lemas,
+                         "condTrain"=(1:(round(nrow(datos)*0.8))),
+                         "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                         parametros="random_lemas_75Rounds_varGamma20",
+                         iteraciones=1,
+                         xGamma=i,xNround=75)
+    }
+    
+Variamos gamma entre [30, 100] con incrementos de 10.0: 
+
+    for (i in seq(from=30, to=100, by=10)) {
+      a <- procesaModelo("X"=datos[xRandom,],
+                         "target"=datos$Evolucion[xRandom],
+                         "strWords"=strLemas,
+                         "cmm"=cmm_lemas,
+                         "condTrain"=(1:(round(nrow(datos)*0.8))),
+                         "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                         parametros="random_lemas_75Rounds_varGamma100",
+                         iteraciones=1,
+                         xGamma=i,xNround=75)
+    }
+
+Una vez terminado el entrenamiento, analizamos el resultado:
+
+![lemas_75rounds_varGamma](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/lemas_75round_1iter_varGamma.JPG)
+
+Con el valor de 10 para el parámetro gamma obtenemos el máximo entre los valores de entrenamiento y pruebas.
+
+### Tunning eta
+
+El parámetro eta, es el factor de aprendizaje. veamos si encontramos un valor mejor al usado por defecto (0.3) que nos proporcione mejor resultado:
+
+Variamos eta entre [0, 0.3] con incrementos de 0.01:
+
+    for (i in seq(from=0, to=0.3, by=0.01)) {
+      a <- procesaModelo("X"=datos[xRandom,],
+                         "target"=datos$Evolucion[xRandom],
+                         "strWords"=strLemas,
+                         "cmm"=cmm_lemas,
+                         "condTrain"=(1:(round(nrow(datos)*0.8))),
+                         "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                         parametros="random_lemas_75Rounds_Gamma10_varEta",
+                         iteraciones=1,
+                         xGamma=10,xEta=i,xNround=75)
+    }
+
+variamos eta entre [0.3, 1] con incrementos de 0.1:
+
+    for (i in seq(from=0.3, to=1, by=0.1)) {
+      a <- procesaModelo("X"=datos[xRandom,],
+                         "target"=datos$Evolucion[xRandom],
+                         "strWords"=strLemas,
+                         "cmm"=cmm_lemas,
+                         "condTrain"=(1:(round(nrow(datos)*0.8))),
+                         "condDev"=(((round(nrow(datos)*0.8))+1):(round(nrow(datos)*0.9))),
+                         parametros="random_lemas_75Rounds_Gamma10_varEta1",
+                         iteraciones=1,
+                         xGamma=10,xEta=i,xNround=75)
+    }
+
+Analizamos el resultado:
+
+![lemas_75rounds_10Gamma varEta](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/lemas_75round_1iter_10Gamma_varEta.JPG)
+
+Los valores de eta no pueden ser superiores a 1. En este valor parece que el modelo se ajusta a los mejores resultados.
+
+Fijando estos valores y reentrenando el modelo unas miles de veces, obtenemos unos resultados de acierto en los datos de entrenamiento de aprox. 65% y de los datos de prueba de un 42%.
 
 ## Conclusiones 
-Los resultados obtenidos no son muy buenos. Se puede trabajar más sobre los datos, seleccionando restricciones de palabras, incorporando más datos (de otros diarios). Como detalle, si analizamos las palabras que más aparecen en los artículos de los equipos, agrupando los comentarios por el tipo de evolución que han tenido (es decir, agrupando los comentarios que han precedido a derrota, un empate o una victoria, independientemente del equipo, tenemos las siguientes ***nubes de palabras***:
+Los resultados obtenidos no son muy buenos. Se puede trabajar más sobre los datos, seleccionando restricciones de palabras, incorporando más datos (de otros diarios). 
+
+Como detalle, si analizamos las palabras que más aparecen en los artículos de los equipos, agrupando los comentarios por el tipo de evolución que han tenido (es decir, agrupando los comentarios que han precedido a derrota, un empate o una victoria, independientemente del equipo, tenemos las siguientes ***nubes de palabras***:
 
 ![wordCloud sobre artículos agrupados por evolución de los equipos](https://github.com/jluqueor/predictor_jornada_liga/blob/master/img/WordCloudEvolucion.JPG)
 
