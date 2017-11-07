@@ -41,7 +41,7 @@ Este mismo análisis se puede realizar con otras publicaciones de manera que se 
 
 ### Obtención
 
-La obtención de los datos requiere de un análisis detallado de las páginas que queremos rastrear. Hay que tener cuidado tambien porque el modo en que se presenta la información puede diferir entre varias consultas. La obtención se ha realizado capturando datos desde 2011 hasta el día de hoy. Se han detectado hasta tres cambios de formato en las páginas durante estos años. 
+La obtención de los datos requiere de un análisis detallado de las páginas que queremos rastrear. Hay que tener cuidado tambien porque el modo en que se presenta la información puede diferir entre varias consultas. La obtención se ha realizado capturando datos desde 2012 hasta el día de hoy. Se han detectado hasta tres cambios de formato en las páginas durante estos años. 
 
 El proceso de rastreo y captura suele además ser un proceso costoso en tiempo de ejecución, ya que dependemos del ancho de banda que el proveedor del servicio este dando y del número de páginas a descargar y tratar. Puede suceder que la información falle para algún día por lo que es facil que tengamos que repetir el proceso varias veces hasta conseguir el procesamiento completo. 
 
