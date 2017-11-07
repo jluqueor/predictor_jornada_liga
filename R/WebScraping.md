@@ -30,7 +30,7 @@ Para capturar la información se ha generado el módulo *****WebScraping.R*****.
       temporada <- paste(vYear, substring(as.double(vYear)+1, 3, 4), sep="_")
       url <- paste("http://www.marca.com/estadisticas/futbol/primera/" , temporada, "/jornada_1/", sep="")
 
-Se Formatea la ruta **http** correspondiente a la temporada que queremos consultar.
+Se formatea la ruta **http** correspondiente a la temporada que queremos consultar.
 
       doc <- read_html(url)
 
@@ -49,14 +49,13 @@ Recorremos la lista de jornadas capturando la fecha de la misma.
 
       charCalen <- strsplit(calendario, split=" ")
 
-Cada elemento de charCalen tiene la forma ***<dia1> **"y"** <dia2> <mes>***.
-Tomamos el valor de ***<dia2>*** (3 posición):
+Cada elemento de charCalen tiene la forma <dia_1>" y "<dia_2>" de "<mes>. Tomamos el valor de <dia2> (3 posición):
     
       vDays <- unlist(lapply(charCalen, function(x) {x[3]}))
 
-Tomamos el valor de ***<mes>*** (4 posición)
+Tomamos el valor de <mes> (5 posición)
     
-      vMonths <- unlist(lapply(charCalen, function(x) {x[4]}))
+      vMonths <- unlist(lapply(charCalen, function(x) {x[5]}))
 
 Convertimos la información capturada en datos tipo fecha (Una fecha por cada jornada).
 
